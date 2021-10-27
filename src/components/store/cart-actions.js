@@ -16,7 +16,7 @@ export const sendCartData = (cart) => {
         "https://reactdemo-7f6f1-default-rtdb.firebaseio.com/cart.json",
         {
           method: "PUT",
-          body: JSON.stringify(cart.items),
+          body: JSON.stringify({ items: cart.items }),
           headers: { "Content-Type": "application/json" },
         }
       );
@@ -54,7 +54,9 @@ export const fetchCartData = () => {
 
     try {
       const data = await send.json();
-      dispatch(cartActions.setCart(data));
+      if (data) {
+        dispatch(cartActions.setCart(data.items));
+      }
     } catch (error) {
       dispatch(
         uiActions.showNotification({
